@@ -144,10 +144,8 @@ void recPrintCode(CMDList* code,int tabs){
 		for(c = 0 ; c < tabs ; c++)
 			printf("   ");
 		printf("%s\n",code->cmd->leftTXT);
-		recPrintCode(code->cmd->insideBlock,tabs++);
+		recPrintCode(code->cmd->insideBlock,tabs+1);
 		recPrintCode(code->next,tabs);
-	}else{
-		printf("code machine broke\n");
 	}
 }
 

@@ -1320,7 +1320,7 @@ yyreduce:
     {
         case 2:
 #line 82 "parser.bison" /* yacc.c:1646  */
-    {(yyval.cmdList) = root;}
+    { root = (yyvsp[-1].cmdList); }
 #line 1325 "parser.c" /* yacc.c:1646  */
     break;
 

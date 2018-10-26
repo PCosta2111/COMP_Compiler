@@ -79,7 +79,7 @@ BoolExpr* broot;
 }
 
 %%
-program: TYPE_INT MAIN OPEN_PAR CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET { $$ = root; }
+program: TYPE_INT MAIN OPEN_PAR CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET { root = $6; }
 
 code:
 	{
