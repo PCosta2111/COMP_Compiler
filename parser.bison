@@ -49,6 +49,7 @@
   int boolValue;
   Expr* exprValue; 
   CMD* cmd; 
+  CMDList* cmdList; 
   BoolExpr* exprBool; 
 }
 
@@ -57,13 +58,9 @@
 %type <boolValue> FALSE
 %type <exprValue> expr
 %type <exprBool> bexpr
-%type <cmd> code
+%type <cmdList> program
+%type <cmdList> code
 %type <cmd> atrib
-%type <cmd> if
-%type <cmd> for
-%type <cmd> while
-%type <cmd> scanf
-%type <cmd> printf
 
 // Use "%code requires" to make declarations go
 // into both parser.c and parser.h
@@ -77,17 +74,19 @@ extern int yyline;
 extern char* yytext;
 extern FILE* yyin;
 extern void yyerror(const char* msg);
-CMD* root;
+CMDList* root;
 BoolExpr* broot;
 }
 
 %%
-program: TYPE_INT MAIN OPEN_PAR CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET
+program: TYPE_INT MAIN OPEN_PAR CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET { $$ = root; }
 
 code:
-	{ $$ = NULL;}
+	{
+		$$ = NULL;
+	}
 	|
-	atrib SEMI_COLON code
+	atrib SEMI_COLON code {$$ = ast_cmdlist($1,$3);}
 	|
 	if code
 	|
@@ -100,15 +99,15 @@ code:
 	scanf code ;
 	
 atrib:
-	TYPE_INT VAR_NAME
+	TYPE_INT VAR_NAME {$$ = ast_cmd("int",NULL,NULL);}
 	|
-	TYPE_FLOAT VAR_NAME
+	TYPE_FLOAT VAR_NAME {$$ = ast_cmd("float",NULL,NULL);}
 	|
-	TYPE_INT VAR_NAME ASSIGN expr
+	TYPE_INT VAR_NAME ASSIGN expr {$$ = ast_cmd("int",NULL,NULL);}
 	|
-	TYPE_FLOAT VAR_NAME ASSIGN expr
+	TYPE_FLOAT VAR_NAME ASSIGN expr {$$ = ast_cmd("float",NULL,NULL);}
 	|
-	VAR_NAME ASSIGN expr;
+	VAR_NAME ASSIGN expr {$$ = ast_cmd("int",NULL,NULL);};
 
 if:
 	IF OPEN_PAR bexpr CLOSE_PAR THEN OPEN_BRACKET code CLOSE_BRACKET

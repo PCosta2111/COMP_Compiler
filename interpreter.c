@@ -138,6 +138,25 @@ void printAbsTree(Expr* exp){
 }
 
 
+void recPrintCode(CMDList* code,int tabs){
+	int c;
+	if(code != NULL){
+		for(c = 0 ; c < tabs ; c++)
+			printf("   ");
+		printf("%s\n",code->cmd->leftTXT);
+		recPrintCode(code->cmd->insideBlock,tabs++);
+		recPrintCode(code->next,tabs);
+	}else{
+		printf("code machine broke\n");
+	}
+}
+
+
+void printCodeTree(CMDList* code){
+	printf("\nABSTRACT TREE: \n");
+	recPrintCode(code,0);	
+}
+
 int main(int argc, char** argv) {
   --argc; ++argv;
   if (argc != 0) {
@@ -156,6 +175,9 @@ int main(int argc, char** argv) {
 	  printf("Result = %d\n", eval(root->exp));
 		printAbsTree(root->exp);*/
 	  printf("accepted\n");
+	  
+	  printCodeTree(root);
+	  
   }
   return 0;
 

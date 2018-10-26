@@ -1,20 +1,5 @@
-int main() {
+int main() { 
 
-	if ( 1 > 2 ) then{
-		int a = 2;
-		float a = 2;
-		
-		a = 1 + 1;
-		
-		while( 2 < 5){
-			for( b = 0 ; 2 < 7 ; a = 1+1){
-				printf(teste,a);
-			}		
-		}
-		
-	}else{
+	int a; 
 	
-	}
-
-
 }

@@ -53,10 +53,21 @@ BoolExpr* ast_bool(int v) {
   return node;
 }
 
-CMD* ast_cmdlist(char* str,CMD* next){
-	CMD* res = (CMD*) malloc(sizeof(CMD));
-	strcpy(res->txt,str);
+CMDList* ast_cmdlist(CMD* c, CMDList* next){
+	CMDList* res = (CMDList*) malloc(sizeof(CMDList));
+	res->cmd = c;
+	//rintf("Here in cmdList\n");
 	res->next=next;
+	return res;
+
+}
+
+CMD* ast_cmd(char* str1,char* str2,CMDList* inside){
+	CMD* res = (CMD*) malloc(sizeof(CMD));
+	res->leftTXT = str1;
+	//printf("%s",str1);
+	res->rightTXT = str2;
+	res->insideBlock=inside;
 	return res;
 
 }

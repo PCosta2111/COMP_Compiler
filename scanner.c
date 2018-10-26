@@ -183,7 +183,7 @@ extern FILE *yyin, *yyout;
 	do \
 		{ \
 		/* Undo effects of setting up yytext. */ \
-        int yyless_macro_arg = (n); \
+        yy_size_t yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		*yy_cp = (yy_hold_char); \
 		YY_RESTORE_YY_MORE_OFFSET \
@@ -379,8 +379,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 40
-#define YY_END_OF_BUFFER 41
+#define YY_NUM_RULES 39
+#define YY_END_OF_BUFFER 40
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -390,15 +390,15 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[89] =
     {   0,
-        0,    0,   41,   39,    1,    3,   39,   39,   39,   30,
-       25,   14,   15,   28,   26,   11,   27,   29,    4,   16,
-       36,   24,   34,   39,   37,   37,   37,   37,   37,   37,
-       37,   37,   37,   12,   13,    1,   32,    0,   38,    0,
-        0,    2,    4,   37,   35,   31,   33,    0,   37,   37,
-       37,   37,   37,   17,   37,   37,   37,   37,   37,   37,
-       37,   37,   37,   37,   20,    5,   37,   37,   37,   37,
-       37,   37,   19,   37,   37,    9,   37,   37,   18,    7,
-       37,    8,    6,   37,   23,   21,   22,    0
+        0,    0,   40,   38,    1,    3,   38,   38,   38,   29,
+       24,   13,   14,   27,   25,   10,   26,   28,    4,   15,
+       35,   23,   33,   38,   36,   36,   36,   36,   36,   36,
+       36,   36,   36,   11,   12,    1,   31,    0,   37,    0,
+        0,    2,    4,   36,   34,   30,   32,    0,   36,   36,
+       36,   36,   36,   16,   36,   36,   36,   36,   36,   36,
+       36,   36,   36,   36,   19,    5,   36,   36,   36,   36,
+       36,   36,   18,   36,   36,    9,   36,   36,   17,    7,
+       36,    8,    6,   36,   22,   20,   21,    0
     } ;
 
 static yyconst YY_CHAR yy_ec[256] =
@@ -873,160 +873,155 @@ YY_RULE_SETUP
 case 10:
 YY_RULE_SETUP
 #line 22 "scanner.flex"
-{ return TYPE_INT;}
+{ return COLON;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 23 "scanner.flex"
-{ return COLON;}
+{ return OPEN_BRACKET; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 24 "scanner.flex"
-{ return OPEN_BRACKET; }
+{ return CLOSE_BRACKET; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 25 "scanner.flex"
-{ return CLOSE_BRACKET; }
+{ return OPEN_PAR; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 26 "scanner.flex"
-{ return OPEN_PAR; }
+{ return CLOSE_PAR; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 27 "scanner.flex"
-{ return CLOSE_PAR; }
+{ return SEMI_COLON; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 28 "scanner.flex"
-{ return SEMI_COLON; }
+{ return IF; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 29 "scanner.flex"
-{ return IF; }
+{ return THEN; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 30 "scanner.flex"
-{ return THEN; }
+{ return ELSE; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 31 "scanner.flex"
-{ return ELSE; }
+{ return FOR; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 32 "scanner.flex"
-{ return FOR; }
+{ return WHILE; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 33 "scanner.flex"
-{ return WHILE; }
+{ return PRINT; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 34 "scanner.flex"
-{ return PRINT; }
+{ return SCAN; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 35 "scanner.flex"
-{ return SCAN; }
+{ return ASSIGN;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 36 "scanner.flex"
-{ return ASSIGN;}
+{ return COM_E;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 37 "scanner.flex"
-{ return COM_E;}
+{ return PLUS; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 38 "scanner.flex"
-{ return PLUS; }
+{ return MINUS; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 39 "scanner.flex"
-{ return MINUS; }
+{ return MUL; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 40 "scanner.flex"
-{ return MUL; }
+{ return DIV; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 41 "scanner.flex"
-{ return DIV; }
+{ return MOD; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 42 "scanner.flex"
-{ return MOD; }
+{ return EQUAL;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 43 "scanner.flex"
-{ return EQUAL;}
+{ return NOT_EQUAL;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 44 "scanner.flex"
-{ return NOT_EQUAL;}
+{ return E_GREATER;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 45 "scanner.flex"
-{ return E_GREATER;}
+{ return GREATER;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 46 "scanner.flex"
-{ return GREATER;}
+{ return E_SMALLER;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 47 "scanner.flex"
-{ return E_SMALLER;}
+{ return SMALLER;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 48 "scanner.flex"
-{ return SMALLER;}
-	YY_BREAK
-case 37:
-YY_RULE_SETUP
-#line 49 "scanner.flex"
 {  return VAR_NAME; }
 	YY_BREAK
+case 37:
+/* rule 37 can match eol */
+YY_RULE_SETUP
+#line 49 "scanner.flex"
+{ return STRING;}
+	YY_BREAK
 case 38:
-/* rule 38 can match eol */
 YY_RULE_SETUP
 #line 50 "scanner.flex"
-{ return STRING;}
+{ yyerror("unexpected character"); }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 51 "scanner.flex"
-{ yyerror("unexpected character"); }
-	YY_BREAK
-case 40:
-YY_RULE_SETUP
-#line 52 "scanner.flex"
 ECHO;
 	YY_BREAK
-#line 1030 "scanner.c"
+#line 1025 "scanner.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1701,7 +1696,7 @@ static void yyensure_buffer_stack (void)
 		 * scanner will even need a stack. We use 2 instead of 1 to avoid an
 		 * immediate realloc on the next call.
          */
-		num_to_alloc = 1; // After all that talk, this was set to 1 anyways...
+      num_to_alloc = 1; /* After all that talk, this was set to 1 anyways... */
 		(yy_buffer_stack) = (struct yy_buffer_state**)yyalloc
 								(num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
@@ -1837,7 +1832,7 @@ static void yy_fatal_error (yyconst char* msg )
 	do \
 		{ \
 		/* Undo effects of setting up yytext. */ \
-        int yyless_macro_arg = (n); \
+        yy_size_t yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		yytext[yyleng] = (yy_hold_char); \
 		(yy_c_buf_p) = yytext + yyless_macro_arg; \
@@ -2027,7 +2022,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 52 "scanner.flex"
+#line 51 "scanner.flex"
 
 
 

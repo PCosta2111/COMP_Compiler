@@ -19,7 +19,6 @@ float 	{ return TYPE_FLOAT;}
 "true"  { return TRUE;}
 "false" { return FALSE;}
 "main"	{ return MAIN;}
-"int"	{ return TYPE_INT;}
 ","		{ return COLON;}
 "{" 	{ return OPEN_BRACKET; }
 "}" 	{ return CLOSE_BRACKET; }
