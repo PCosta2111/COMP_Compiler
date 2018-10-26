@@ -4,8 +4,8 @@ int main() {
 	
 	float a; 
 	
-	int b; 
-	
-	int a; 
+	if ( 1 == 1 ) then {
+		int c;
+	}
 	
 }
