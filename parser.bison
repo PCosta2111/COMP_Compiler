@@ -61,6 +61,12 @@
 %type <cmdList> program
 %type <cmdList> code
 %type <cmd> atrib
+%type <cmd> if
+%type <cmd> else
+%type <cmd> for
+%type <cmd> while
+%type <cmd> printf
+%type <cmd> scanf
 
 // Use "%code requires" to make declarations go
 // into both parser.c and parser.h
@@ -99,40 +105,43 @@ code:
 	scanf code {$$ = ast_cmdlist($1,$2);};
 	
 atrib:
-	TYPE_INT VAR_NAME {$$ = ast_cmd("int",NULL,NULL);}
+	TYPE_INT VAR_NAME {$$ = ast_cmd("INT",NULL,NULL);}
 	|
-	TYPE_FLOAT VAR_NAME {$$ = ast_cmd("float",NULL,NULL);}
+	TYPE_FLOAT VAR_NAME {$$ = ast_cmd("FLOAT",NULL,NULL);}
 	|
-	TYPE_INT VAR_NAME ASSIGN expr {$$ = ast_cmd("int",NULL,NULL);}
+	TYPE_INT VAR_NAME ASSIGN expr {$$ = ast_cmd("INT",NULL,NULL);}
 	|
-	TYPE_FLOAT VAR_NAME ASSIGN expr {$$ = ast_cmd("float",NULL,NULL);}
+	TYPE_FLOAT VAR_NAME ASSIGN expr {$$ = ast_cmd("FLOAT",NULL,NULL);}
 	|
-	VAR_NAME ASSIGN expr {$$ = ast_cmd("int",NULL,NULL);};
+	VAR_NAME ASSIGN expr {$$ = ast_cmd("INT",NULL,NULL);};
 
 if:
-	IF OPEN_PAR bexpr CLOSE_PAR THEN OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd(IF,NULL,$7);}
+	IF OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd("IF",NULL,$6);}
 	|
-	IF OPEN_PAR bexpr CLOSE_PAR THEN OPEN_BRACKET code CLOSE_BRACKET ELSE OPEN_BRACKET code CLOSE_BRACKET ;
-	
+	IF OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET else {$$ = ast_cmd("IF",$8,$6);};
+
+else:
+	ELSE OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd("ELSE",NULL,$3);};
+
 for:
-	FOR OPEN_PAR atrib SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd(FOR,NULL,$10);};
+	FOR OPEN_PAR atrib SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd("FOR",NULL,$10);};
 
 while:
-	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd(WHILE,NULL,$6);};
+	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd("WHILE",NULL,$6);};
 	
 printf:
-	PRINT OPEN_PAR STRING var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd(PRINT,NULL,NULL)}; 
+	PRINT OPEN_PAR STRING var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd("PRINTF",NULL,NULL);}; 
 
 scanf:
-	SCAN OPEN_PAR STRING s_var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd(SCAN,NULL,NULL)};
+	SCAN OPEN_PAR STRING s_var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd("SCANF",NULL,NULL);};
 		
 var_list:
 	|
-	COLON VAR_NAME var_list {$$ = ast_cmd(SCAN,NULL,NULL)};
+	COLON VAR_NAME var_list 
 
 s_var_list:
 	|
-	COLON COM_E VAR_NAME s_var_list {$$ = ast_cmd(SCAN,NULL,NULL)};
+	COLON COM_E VAR_NAME s_var_list
 	
 expr: 
   INT { 

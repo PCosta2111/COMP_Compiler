@@ -62,11 +62,11 @@ CMDList* ast_cmdlist(CMD* c, CMDList* next){
 
 }
 
-CMD* ast_cmd(char* str1,char* str2,CMDList* inside){
+CMD* ast_cmd(char* str1,CMD* cmd_else,CMDList* inside){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
 	res->leftTXT = str1;
 	//printf("%s",str1);
-	res->rightTXT = str2;
+	res->cmd_else = cmd_else;
 	res->insideBlock=inside;
 	return res;
 

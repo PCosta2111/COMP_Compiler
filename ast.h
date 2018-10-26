@@ -35,9 +35,9 @@ struct _BoolExpr {
 };
 
 struct _CMD{
-	char *leftTXT; // for integer values
+	char *leftTXT; 
 	struct _CMDList *insideBlock;
-	char *rightTXT;
+	struct _CMD *cmd_else; //in case of if
 };
 
 struct _CMDList{
@@ -56,7 +56,7 @@ typedef struct _CMDList CMDList;
 // Constructor functions (see implementation in ast.c)
 Expr* ast_integer(int v);
 Expr* ast_operation(int operator, Expr* left, Expr* right);
-CMD* ast_cmd(char* str1,char* str2,CMDList* inside);
+CMD* ast_cmd(char* str1,CMD* cmd_else,CMDList* inside);
 CMDList* ast_cmdlist(CMD* c, CMDList* next);
 BoolExpr* ast_Bool_operation(int operator, Expr* left, Expr* right);
 BoolExpr* ast_bool(int v);

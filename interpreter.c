@@ -137,14 +137,23 @@ void printAbsTree(Expr* exp){
 	recPrint(exp,0);
 }
 
+void printCMD(CMD* c,int tabs){
+	int i;
+	for(i = 0 ; i < tabs ; i++)
+		printf("   ");
+	
+	printf("%s\n",c->leftTXT);
+	
+}
 
 void recPrintCode(CMDList* code,int tabs){
-	int c;
 	if(code != NULL){
-		for(c = 0 ; c < tabs ; c++)
-			printf("   ");
-		printf("%s\n",code->cmd->leftTXT);
+		printCMD(code->cmd,tabs);
 		recPrintCode(code->cmd->insideBlock,tabs+1);
+		if( code->cmd->cmd_else != NULL){
+			printCMD(code->cmd->cmd_else,tabs);
+			recPrintCode(code->cmd->cmd_else->insideBlock,tabs+1);
+		}
 		recPrintCode(code->next,tabs);
 	}
 }
