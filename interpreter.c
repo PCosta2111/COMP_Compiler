@@ -142,7 +142,7 @@ void printCMD(CMD* c,int tabs){
 	for(i = 0 ; i < tabs ; i++)
 		printf("   ");
 	
-	printf("%s\n",c->leftTXT);
+	printf("%s:\n",c->leftTXT);
 	
 }
 
@@ -160,8 +160,9 @@ void recPrintCode(CMDList* code,int tabs){
 
 
 void printCodeTree(CMDList* code){
-	printf("\nABSTRACT TREE: \n");
-	recPrintCode(code,0);	
+	printf("\nABSTRACT TREE: \n\n");
+	printf("INT MAIN():\n");
+	recPrintCode(code,1);	
 }
 
 int main(int argc, char** argv) {

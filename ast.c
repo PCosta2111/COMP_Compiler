@@ -10,6 +10,15 @@ Expr* ast_integer(int v) {
   Expr* node = (Expr*) malloc(sizeof(Expr));
   node->kind = E_INTEGER;
   node->attr.value = v;
+  node->attr.varname = NULL;
+  return node;
+}
+
+Expr* ast_var(char* v) {
+  Expr* node = (Expr*) malloc(sizeof(Expr));
+  node->kind = E_VAR;
+  node->attr.value = 0;
+  node->attr.varname = v;
   return node;
 }
 

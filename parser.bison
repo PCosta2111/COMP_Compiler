@@ -47,6 +47,7 @@
 %union {
   int intValue;
   int boolValue;
+  char* varName;
   Expr* exprValue; 
   CMD* cmd; 
   CMDList* cmdList; 
@@ -54,6 +55,7 @@
 }
 
 %type <intValue> INT
+%type <varName> VAR_NAME
 %type <boolValue> TRUE
 %type <boolValue> FALSE
 %type <exprValue> expr
@@ -109,7 +111,7 @@ atrib:
 	|
 	TYPE_FLOAT VAR_NAME {$$ = ast_cmd("FLOAT",NULL,NULL);}
 	|
-	TYPE_INT VAR_NAME ASSIGN expr {$$ = ast_cmd("INT",NULL,NULL);}
+	TYPE_INT VAR_NAME ASSIGN expr {$$ = ast_cmd("INT $2",NULL,NULL);}
 	|
 	TYPE_FLOAT VAR_NAME ASSIGN expr {$$ = ast_cmd("FLOAT",NULL,NULL);}
 	|
@@ -146,6 +148,10 @@ s_var_list:
 expr: 
   INT { 
     $$ = ast_integer($1); 
+  }
+  |
+  VAR_NAME { 
+    $$ = ast_var($1); 
   }
   | 
   expr PLUS expr { 

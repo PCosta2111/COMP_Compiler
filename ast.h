@@ -7,10 +7,12 @@
 struct _Expr {
   enum { 
     E_INTEGER,
+    E_VAR,
     E_OPERATION
   } kind;
   union {
     int value; // for integer values
+    char* varname; // for integer values
     struct { 
       int operator; // PLUS, MINUS, etc 
       struct _Expr* left;
@@ -55,6 +57,7 @@ typedef struct _CMDList CMDList;
 
 // Constructor functions (see implementation in ast.c)
 Expr* ast_integer(int v);
+Expr* ast_var(char* v);
 Expr* ast_operation(int operator, Expr* left, Expr* right);
 CMD* ast_cmd(char* str1,CMD* cmd_else,CMDList* inside);
 CMDList* ast_cmdlist(CMD* c, CMDList* next);

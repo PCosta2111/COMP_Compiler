@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 73 "parser.bison" /* yacc.c:1909  */
+#line 75 "parser.bison" /* yacc.c:1909  */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -107,12 +107,13 @@ union YYSTYPE
 
   int intValue;
   int boolValue;
+  char* varName;
   Expr* exprValue; 
   CMD* cmd; 
   CMDList* cmdList; 
   BoolExpr* exprBool; 
 
-#line 116 "parser.h" /* yacc.c:1909  */
+#line 117 "parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
