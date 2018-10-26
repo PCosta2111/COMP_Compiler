@@ -171,7 +171,6 @@ CMD* ast_cmd_PRINT_SCAN(char* str1,char* str,VarList* v){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
 	res->leftTXT = str1;
 	res->id = CMD_PRINT_SCAN;
-	
 	res->att.spscan.str= str;
 	res->att.spscan.vList = v;
 	return res;

@@ -48,7 +48,8 @@ float 	{ return TYPE_FLOAT;}
 [a-z][a-zA-Z0-9_]* {  
 	yylval.varName = strdup(yytext);
 	return VAR_NAME; }
-[a-zA-Z_]?\"(\\.|[^\\"])*\" { return STRING;}
+[a-zA-Z_]?\"(\\.|[^\\"])*\" { yylval.varName = strdup(yytext);
+	return STRING; }
 .  { yyerror("unexpected character"); }
 %%
 

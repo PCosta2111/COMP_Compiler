@@ -122,9 +122,9 @@ void recPrint(Expr* exp,int tabs){
 			printf("   ");
 			
 		if (exp->kind == E_INTEGER) {
-			printf("%d",exp->attr.value);
+			printf("%d\n",exp->attr.value);
 		}else if(exp->kind == E_VAR){
-			printf("%s",exp->attr.varname);
+			printf("%s\n",exp->attr.varname);
 		}else{
 			printOp(exp->attr.op.operator);
 			tabs++;
@@ -134,10 +134,11 @@ void recPrint(Expr* exp,int tabs){
 	}
 }
 
-void printVarList(VarList* v){
-	if(v->head != NULL){
-		printf(" %c", v->head);
-		printVarList(v->next);
+void printVarList(VarList* v,int tabs){
+	if(v != NULL){
+		putTabs(tabs);
+		printf("%s\n", v->head);
+		printVarList(v->next,tabs);
 	}
 }
 
@@ -159,8 +160,7 @@ void printBoolExpr(BoolExpr* b,int tabs){
 				printf("false\n");
 		}else{
 			
-			for(c = 0 ; c < tabs+1 ; c++)
-				printf("   ");
+			putTabs(tabs+1);
 			printOp(b->attr.op.operator);
 			tabs += 2;
 			recPrint(b->attr.op.left,tabs);
@@ -173,6 +173,14 @@ void printAbsTree(Expr* exp){
 	printf("\nABSTRACT TREE: \n");
 	recPrint(exp,0);
 }
+
+void putTabs(int tabs){
+	int i;
+	for(i = 0 ; i < tabs ; i++)
+		printf("   ");
+		
+}
+	
 
 /*
 
@@ -219,57 +227,63 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 		
 		CMD* c = (CMD*) malloc(sizeof(CMD));
 		c = code->cmd;
-		
+		putTabs(tabs);
 		switch(c->id){
 			case CMD_DECL:
-				printf("%s\n", c->leftTXT);
-				printf("	");
-				printf("%s = ", c->att.sdecl.declared_var);
+				printf("%s %s =:\n", c->leftTXT, c->att.sdecl.declared_var);
 				recPrint(c->att.sdecl.expr,tabs+1);
 				printf("\n");
 				break;
 			case CMD_ASSIGN:
-				printf("	");
-				printf("%s = ", c->att.sdecl.declared_var);
+				printf("%s =:\n", c->att.sdecl.declared_var);
 				recPrint(c->att.sdecl.expr,tabs+1);
 				printf("\n");
 				break;
 			case CMD_IF:
 				printf("%s:\n",c->leftTXT);
 				printBoolExpr(c->att.sif.cond,tabs+1);
-				recPrintCode(c->att.sif.insideBlock,tabs+2);
-				printf("\n");
-				break;
-			case CMD_ELSE:
-				printf("%s", c->leftTXT);
-				recPrintCode(c->att.selse.insideBlock,tabs+2);
+				recPrintCode(c->att.sif.insideBlock,tabs+1);
+				if( c->att.sif.cmd_else != NULL){
+					putTabs(tabs);
+					printf("ELSE:\n");
+					recPrintCode(c->att.sif.cmd_else->att.selse.insideBlock,tabs+1);
+				}
+				//recPrintCode(c->att.sif.cmd_else,tabs);
 				printf("\n");
 				break;
 			case CMD_WHILE:
-				printf("%s", c->leftTXT);
+				printf("%s:\n", c->leftTXT);
 				printBoolExpr(c->att.swhile.cond,tabs+1);
-				recPrintCode(c->att.swhile.insideBlock,tabs+2);
+				recPrintCode(c->att.swhile.insideBlock,tabs+1);
 				printf("\n");
 				break;
 			case CMD_FOR:
 				printf("%s:\n",c->leftTXT);
-				recPrint(c->att.sfor.cmd_init,tabs+1);
-				printf(" ; ");
+				putTabs(tabs+1);
+				printf("INIT_EXPR:\n");
+				putTabs(tabs+2);
+				printf("%s =:\n",c->att.sfor.cmd_init->att.sdecl.declared_var);
+				recPrint(c->att.sfor.cmd_init->att.sdecl.expr,tabs+3);
+							
 				printBoolExpr(c->att.sfor.cond,tabs+1);
-				printf(" ; ");
-				recPrint(c->att.sfor.cmd_incr,tabs+1);
-				printf(" ; \n");
-				recPrintCode(c->att.sfor.insideBlock,tabs+2);
+				
+				putTabs(tabs+1);
+				printf("INCR_EXPR:\n");
+				putTabs(tabs+2);
+				printf("%s =:\n",c->att.sfor.cmd_incr->att.sdecl.declared_var);
+				recPrint(c->att.sfor.cmd_incr->att.sdecl.expr,tabs+3);
 				printf("\n");
+				
 				break;
 			case CMD_PRINT_SCAN:
-				printf("%s", c->leftTXT);
-				printf("String : \n");
-				printf("	");
-				printf("%c\n",c->att.spscan.str);
-				printf("Var_List : \n");
-				printf("	");
-				printVarList(c->att.spscan.vList);
+				printf("%s:\n", c->leftTXT);
+				putTabs(tabs+1);
+				printf("STRING : \n");
+				putTabs(tabs+2);
+				printf("%s\n",c->att.spscan.str);
+				putTabs(tabs+1);
+				printf("VARS : \n");
+				printVarList(c->att.spscan.vList,tabs+2);
 				printf("\n");
 				break;
 			default:

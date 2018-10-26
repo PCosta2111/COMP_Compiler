@@ -7,8 +7,19 @@ int main() {
 	if ( a < 5 ) {
 		int c = 3;
 		
+	}else{
+		int c = 4;
 	}
 	
+	while(a < 10){
+		a = a +1;
+	}
 	
+	for(i=0 ; i < 10 ; i = i+1){
+		a = a+1;
+	}
+	
+	printf("teste",a);
+	printf("teste",a);
 	
 }
