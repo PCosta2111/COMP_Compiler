@@ -65,6 +65,7 @@
 %type <cmdList> program
 %type <cmdList> code
 %type <cmd> atrib
+%type <cmd> assign
 %type <cmd> if
 %type <cmd> else
 %type <cmd> for
@@ -115,7 +116,10 @@ atrib:
 	|
 	TYPE_FLOAT VAR_NAME ASSIGN expr {$$ = ast_cmd_decl("FLOAT",$2,$4);}
 	|
-	VAR_NAME ASSIGN expr {$$ = ast_cmd_assign($1,$3);}
+	assign {$$ = $1;};
+
+assign:
+	VAR_NAME ASSIGN expr {$$ = ast_cmd_assign($1,$3);}; 
 
 if:
 	IF OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_if(NULL,$6,$3);}
@@ -126,7 +130,7 @@ else:
 	ELSE OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_else($3);};
 
 for:
-	FOR OPEN_PAR atrib SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_for($3,$5,$7,$10);};
+	FOR OPEN_PAR assign SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_for($3,$5,$7,$10);};
 
 while:
 	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_while($6,$3);};

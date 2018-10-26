@@ -115,6 +115,13 @@ void printOp(int x){
 	
 }
 
+void putTabs(int tabs){
+	int i;
+	for(i = 0 ; i < tabs ; i++)
+		printf("   ");
+		
+}
+
 void recPrint(Expr* exp,int tabs){
 	int c;
 	if(exp != NULL){
@@ -172,13 +179,6 @@ void printBoolExpr(BoolExpr* b,int tabs){
 void printAbsTree(Expr* exp){
 	printf("\nABSTRACT TREE: \n");
 	recPrint(exp,0);
-}
-
-void putTabs(int tabs){
-	int i;
-	for(i = 0 ; i < tabs ; i++)
-		printf("   ");
-		
 }
 	
 
