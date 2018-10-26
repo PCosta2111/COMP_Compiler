@@ -14,7 +14,26 @@
   GREATER
   E_SMALLER
   SMALLER
-  IF_SIGN
+  VAR_NAME
+  MAIN
+  TYPE_INT
+  TYPE_FLOAT
+  OPEN_BRACKET
+  CLOSE_BRACKET 
+  SEMI_COLON 
+  ASSIGN
+  IF
+  THEN
+  ELSE
+  FOR
+  WHILE
+  OPEN_PAR
+  CLOSE_PAR
+  STRING
+  PRINT
+  COLON
+  SCAN
+  COM_E
   
 // Operator associativity & precedence
 %left PLUS MINUS
@@ -29,7 +48,7 @@
   int intValue;
   int boolValue;
   Expr* exprValue; 
-  ExprList* exprL; 
+  CMD* cmd; 
   BoolExpr* exprBool; 
 }
 
@@ -38,7 +57,13 @@
 %type <boolValue> FALSE
 %type <exprValue> expr
 %type <exprBool> bexpr
-%type <exprL> expr_list
+%type <cmd> code
+%type <cmd> atrib
+%type <cmd> if
+%type <cmd> for
+%type <cmd> while
+%type <cmd> scanf
+%type <cmd> printf
 
 // Use "%code requires" to make declarations go
 // into both parser.c and parser.h
@@ -52,14 +77,64 @@ extern int yyline;
 extern char* yytext;
 extern FILE* yyin;
 extern void yyerror(const char* msg);
-ExprList* root;
+CMD* root;
 BoolExpr* broot;
 }
 
 %%
-program: expr_list { root = $1; }
-  | bexpr { broot = $1;}
-  
+program: TYPE_INT MAIN OPEN_PAR CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET
+
+code:
+	{ $$ = NULL;}
+	|
+	atrib SEMI_COLON code
+	|
+	if code
+	|
+	for code
+	|
+	while code
+	|
+	printf code
+	|
+	scanf code ;
+	
+atrib:
+	TYPE_INT VAR_NAME
+	|
+	TYPE_FLOAT VAR_NAME
+	|
+	TYPE_INT VAR_NAME ASSIGN expr
+	|
+	TYPE_FLOAT VAR_NAME ASSIGN expr
+	|
+	VAR_NAME ASSIGN expr;
+
+if:
+	IF OPEN_PAR bexpr CLOSE_PAR THEN OPEN_BRACKET code CLOSE_BRACKET
+	|
+	IF OPEN_PAR bexpr CLOSE_PAR THEN OPEN_BRACKET code CLOSE_BRACKET ELSE OPEN_BRACKET code CLOSE_BRACKET;
+	
+for:
+	FOR OPEN_PAR atrib SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET;
+
+while:
+	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET;
+	
+printf:
+	PRINT OPEN_PAR STRING var_list CLOSE_PAR SEMI_COLON;
+
+scanf:
+	SCAN OPEN_PAR STRING s_var_list CLOSE_PAR SEMI_COLON;
+		
+var_list:
+	|
+	COLON VAR_NAME var_list;
+
+s_var_list:
+	|
+	COLON COM_E VAR_NAME s_var_list;
+	
 expr: 
   INT { 
     $$ = ast_integer($1); 
@@ -117,14 +192,6 @@ bexpr:
   expr SMALLER expr { 
     $$ = ast_Bool_operation(SMALLER, $1, $3); 
   } 
-  
-expr_list: 
-  { 
-    $$ = NULL; 
-  }
-  |
-  expr expr_list { $$ = ast_exprlist($1,$2);}
-  ;
   
 
 %%

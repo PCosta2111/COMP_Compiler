@@ -2,6 +2,7 @@
 
 #include <stdlib.h> // for malloc
 #include <stdio.h> // for malloc
+#include <string.h> // for malloc
 #include <stdbool.h>
 #include "ast.h" // AST header
 
@@ -52,10 +53,10 @@ BoolExpr* ast_bool(int v) {
   return node;
 }
 
-ExprList* ast_exprlist(Expr* expr, ExprList* next){
-	ExprList* res = (ExprList*) malloc(sizeof(ExprList));
-	res->exp=expr;
-	res->tail=next;
+CMD* ast_cmdlist(char* str,CMD* next){
+	CMD* res = (CMD*) malloc(sizeof(CMD));
+	strcpy(res->txt,str);
+	res->next=next;
 	return res;
 
 }

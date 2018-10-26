@@ -148,13 +148,14 @@ int main(int argc, char** argv) {
     }
   } //  yyin = stdin
   if (yyparse() == 0) {
-	  while(root->tail != NULL){
+	  /*while(root->tail != NULL){
 		printf("Result = %d\n", eval(root->exp));
 		root = root->tail;
 		printAbsTree(root->exp);
 	  }
 	  printf("Result = %d\n", eval(root->exp));
-		printAbsTree(root->exp);
+		printAbsTree(root->exp);*/
+	  printf("accepted\n");
   }
   return 0;
 

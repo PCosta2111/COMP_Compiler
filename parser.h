@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 45 "parser.bison" /* yacc.c:1909  */
+#line 70 "parser.bison" /* yacc.c:1909  */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,7 +51,7 @@ extern int yyline;
 extern char* yytext;
 extern FILE* yyin;
 extern void yyerror(const char* msg);
-ExprList* root;
+CMD* root;
 BoolExpr* broot;
 
 #line 58 "parser.h" /* yacc.c:1909  */
@@ -75,7 +75,26 @@ BoolExpr* broot;
     GREATER = 269,
     E_SMALLER = 270,
     SMALLER = 271,
-    IF_SIGN = 272
+    VAR_NAME = 272,
+    MAIN = 273,
+    TYPE_INT = 274,
+    TYPE_FLOAT = 275,
+    OPEN_BRACKET = 276,
+    CLOSE_BRACKET = 277,
+    SEMI_COLON = 278,
+    ASSIGN = 279,
+    IF = 280,
+    THEN = 281,
+    ELSE = 282,
+    FOR = 283,
+    WHILE = 284,
+    OPEN_PAR = 285,
+    CLOSE_PAR = 286,
+    STRING = 287,
+    PRINT = 288,
+    COLON = 289,
+    SCAN = 290,
+    COM_E = 291
   };
 #endif
 
@@ -84,15 +103,15 @@ BoolExpr* broot;
 
 union YYSTYPE
 {
-#line 28 "parser.bison" /* yacc.c:1909  */
+#line 47 "parser.bison" /* yacc.c:1909  */
 
   int intValue;
   int boolValue;
   Expr* exprValue; 
-  ExprList* exprL; 
+  CMD* cmd; 
   BoolExpr* exprBool; 
 
-#line 96 "parser.h" /* yacc.c:1909  */
+#line 115 "parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

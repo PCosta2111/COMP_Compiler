@@ -34,20 +34,21 @@ struct _BoolExpr {
   } attr;
 };
 
+struct _CMD{
+	char *txt; // for integer values
+	struct _CMD *next;
+};
+
 typedef struct _Expr Expr; // Convenience typedef
 
 typedef struct _BoolExpr BoolExpr;
 
-typedef struct _ExprList{
-	Expr* exp;
-	struct _ExprList* tail;
-	
-} ExprList;
+typedef struct _CMD CMD;
 
 // Constructor functions (see implementation in ast.c)
 Expr* ast_integer(int v);
 Expr* ast_operation(int operator, Expr* left, Expr* right);
-ExprList* ast_exprlist(Expr* expr, ExprList* next);
+CMD* ast_cmdlist(char* str, CMD* next);
 BoolExpr* ast_Bool_operation(int operator, Expr* left, Expr* right);
 BoolExpr* ast_bool(int v);
 

@@ -13,13 +13,28 @@ int yyline = 1;
 [ \t]+ {  }
 #.*\n { yyline++; }
 \n { yyline++; }
-
-\-?[0-9]+ { 
-   yylval.intValue = atoi(yytext);
-   return INT; 
-}
-"true"  {  return TRUE;}
+\-?[0-9]+ {   yylval.intValue = atoi(yytext); return INT; }
+int 	{ return TYPE_INT;}
+float 	{ return TYPE_FLOAT;}
+"true"  { return TRUE;}
 "false" { return FALSE;}
+"main"	{ return MAIN;}
+"int"	{ return TYPE_INT;}
+","		{ return COLON;}
+"{" 	{ return OPEN_BRACKET; }
+"}" 	{ return CLOSE_BRACKET; }
+"(" 	{ return OPEN_PAR; }
+")" 	{ return CLOSE_PAR; }
+";" 	{ return SEMI_COLON; }
+"if" 	{ return IF; }
+"then" 	{ return THEN; }
+"else" 	{ return ELSE; }
+"for" 	{ return FOR; }
+"while" 	{ return WHILE; }
+"printf" 	{ return PRINT; }
+"scanf" 	{ return SCAN; }
+"=" { return ASSIGN;}
+"&"	 { return COM_E;}
 "+"  { return PLUS; }
 "-"  { return MINUS; }
 "*"  { return MUL; }
@@ -31,9 +46,8 @@ int yyline = 1;
 ">"  { return GREATER;}
 "<=" { return E_SMALLER;}
 "<"  { return SMALLER;}
-"?"  { return IF_SIGN;}
-
-
+\-?[a-z][a-zA-Z0-9_]* {  return VAR_NAME; }
+[a-zA-Z_]?\"(\\.|[^\\"])*\" { return STRING;}
 .  { yyerror("unexpected character"); }
 %%
 
