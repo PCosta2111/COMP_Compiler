@@ -12,7 +12,7 @@ struct _Expr {
   } kind;
   union {
     int value; // for integer values
-    char* varname; // for integer values
+    char* varname; // for vars
     struct { 
       int operator; // PLUS, MINUS, etc 
       struct _Expr* left;
@@ -36,10 +36,58 @@ struct _BoolExpr {
   } attr;
 };
 
+struct _VarList{
+	char* head;
+	struct _VarList* next;
+};
+
+
 struct _CMD{
-	char *leftTXT; 
-	struct _CMDList *insideBlock;
-	struct _CMD *cmd_else; //in case of if
+	enum{
+			CMD_DECL,
+			CMD_ASSIGN,
+			CMD_IF,
+			CMD_WHILE,
+			CMD_FOR,
+			CMD_PRINT_SCAN
+	}id;
+	char *leftTXT;
+	union{
+		struct{
+			char* declared_var;
+			struct _Expr* expr;
+		}sdecl;
+		
+		struct{
+			struct _Expr* expr;
+		}sassign;
+		
+		struct{
+			struct _CMDList *insideBlock;
+			struct _BoolExpr* cond;
+			struct _CMD *cmd_else;
+		}sif;
+		
+		struct{
+			struct _CMDList *insideBlock;
+			struct _BoolExpr* cond;
+		}swhile;
+		
+		struct{
+			struct _Expr* init_attr;
+			char* init_var_name;
+			//Incr condition
+			struct _Expr* incr_attr;
+			char* incr_var_name;
+		}sfor;
+		
+		struct{
+			
+			char* str;
+			struct _VarList* vList;
+			
+		}spscan;
+	}attr;
 };
 
 struct _CMDList{
@@ -50,6 +98,8 @@ struct _CMDList{
 typedef struct _Expr Expr; // Convenience typedef
 
 typedef struct _BoolExpr BoolExpr;
+
+typedef struct _VarList VarList;
 
 typedef struct _CMD CMD;
 
@@ -63,5 +113,12 @@ CMD* ast_cmd(char* str1,CMD* cmd_else,CMDList* inside);
 CMDList* ast_cmdlist(CMD* c, CMDList* next);
 BoolExpr* ast_Bool_operation(int operator, Expr* left, Expr* right);
 BoolExpr* ast_bool(int v);
+//----
+CMD* ast_cmd_decl(char* str1,char* vname,Expr* expr);
+CMD* ast_cmd_if(char* str1,CMD* cmd_else,CMDList* inside,BoolExpr* b);
 
+//----
+//CMD* ast_cmd_IF_WHILE(char* str1,CMD* cmd_else,CMDList* inside,BoolExpr* b);
+CMD* ast_cmd_PRINT_SCAN(char* str1,char* str,VarList* v);
+VarList* ast_var_list(char* head,VarList* tail);
 #endif

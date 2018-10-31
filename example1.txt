@@ -1,23 +1,13 @@
 int main() { 
 
-	int a; 
+	int a = 0; 
 	
-	float a; 
+	float b = 2; 
 	
-	if ( a < 18 ) {
-		int c;
+	if ( a < 5 ) {
+		int c = 3;
 		
-		float d;
-		for(a = 1 ; a < 8 ; a = a+1){
-	
-			k = k + 1;
-		}
-	}else{
-	
-		int j;
 	}
-	
-	int e;
 	
 	
 	

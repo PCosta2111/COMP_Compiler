@@ -123,11 +123,41 @@ void recPrint(Expr* exp,int tabs){
 			
 		if (exp->kind == E_INTEGER) {
 			printf("%d\n",exp->attr.value);
+		}else if(exp->kind == E_VAR){
+			printf("%s\n",exp->attr.varname);
 		}else{
 			printOp(exp->attr.op.operator);
 			tabs++;
 			recPrint(exp->attr.op.left,tabs);
 			recPrint(exp->attr.op.right,tabs);
+		}
+	}
+}
+
+/*
+ * PRINT BOOLEAN EXPRESSIONS
+ * 
+ * 
+ * */
+void printBoolExpr(BoolExpr* b,int tabs){
+	int c;
+	if(b != NULL){
+		for(c = 0 ; c < tabs ; c++)
+			printf("   ");
+		printf("COND:\n");
+		if (b->kind == E_BOOL) {
+			if(b->attr.value == 1)
+				printf("true\n");
+			else
+				printf("false\n");
+		}else{
+			
+			for(c = 0 ; c < tabs+1 ; c++)
+				printf("   ");
+			printOp(b->attr.op.operator);
+			tabs += 2;
+			recPrint(b->attr.op.left,tabs);
+			recPrint(b->attr.op.right,tabs);
 		}
 	}
 }
@@ -142,7 +172,15 @@ void printCMD(CMD* c,int tabs){
 	for(i = 0 ; i < tabs ; i++)
 		printf("   ");
 	
-	printf("%s:\n",c->leftTXT);
+	switch(c->cmdAttr.id){
+		case CMD_IF_WHILE:
+			printf("%s:\n",c->leftTXT);
+			printBoolExpr(c->cmdAttr.cond,tabs+1);
+			break;
+		default:
+			printf("%s:\n",c->leftTXT);
+		break;
+	}
 	
 }
 

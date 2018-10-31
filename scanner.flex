@@ -45,7 +45,9 @@ float 	{ return TYPE_FLOAT;}
 ">"  { return GREATER;}
 "<=" { return E_SMALLER;}
 "<"  { return SMALLER;}
-\-?[a-z][a-zA-Z0-9_]* {  return VAR_NAME; }
+[a-z][a-zA-Z0-9_]* {  
+	yylval.varName = strdup(yytext);
+	return VAR_NAME; }
 [a-zA-Z_]?\"(\\.|[^\\"])*\" { return STRING;}
 .  { yyerror("unexpected character"); }
 %%
