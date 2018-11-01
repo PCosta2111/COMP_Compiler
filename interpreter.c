@@ -201,7 +201,7 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				printf("\n");
 				break;
 			case CMD_IF:
-				printf("If :\n");
+				printf("IF :\n");
 				printBoolExpr(c->att.sif.cond,tabs+1);
 				recPrintCode(c->att.sif.insideBlock,tabs+1);
 				if( c->att.sif.cmd_else != NULL){
@@ -213,32 +213,36 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				printf("\n");
 				break;
 			case CMD_WHILE:
-				printf("While :\n");
+				printf("WHILE :\n");
 				printBoolExpr(c->att.swhile.cond,tabs+1);
 				recPrintCode(c->att.swhile.insideBlock,tabs+1);
 				printf("\n");
 				break;
-				
 			case CMD_FOR:
-				printf("For :\n");
+				printf("FOR :\n");
 				putTabs(tabs+1);
 				printf("INIT_EXPR:\n");
 				putTabs(tabs+2);
-				printf("%s =:\n",c->att.sfor.cmd_init->att.sdecl.declared_var);
-				recPrint(c->att.sfor.cmd_init->att.sdecl.expr,tabs+3);
-							
+				if(c->att.sfor.cmd_init->id == CMD_DECL){
+					printf("%s %s =:\n",c->att.sfor.cmd_init->att.sdecl.var_type,c->att.sfor.cmd_init->att.sdecl.declared_var);
+					recPrint(c->att.sfor.cmd_init->att.sdecl.expr,tabs+3); // ->att.sdecl.expr
+				}
+				else {
+					printf("%s =:\n",c->att.sfor.cmd_init->att.sassign.assigned_var);
+					recPrint(c->att.sfor.cmd_init->att.sassign.expr,tabs+3);
+				}	
 				printBoolExpr(c->att.sfor.cond,tabs+1);
 				
 				putTabs(tabs+1);
 				printf("INCR_EXPR:\n");
 				putTabs(tabs+2);
-				printf("%s =:\n",c->att.sfor.cmd_incr->att.sdecl.declared_var);
-				recPrint(c->att.sfor.cmd_incr->att.sdecl.expr,tabs+3);
+				printf("%s =:\n",c->att.sfor.cmd_incr->att.sassign.assigned_var); 
+				recPrint(c->att.sfor.cmd_incr->att.sassign.expr,tabs+3); // ->att.sassign.expr
 				printf("\n");
 				break;
 				
 			case CMD_PRINT:
-				printf("Print :\n");
+				printf("PRINT :\n");
 				putTabs(tabs+1);
 				printf("STRING : \n");
 				putTabs(tabs+2);
@@ -250,7 +254,7 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				break;
 				
 			case CMD_SCAN:
-				printf("Scan :\n");
+				printf("SCAN :\n");
 				putTabs(tabs+1);
 				printf("STRING : \n");
 				putTabs(tabs+2);
