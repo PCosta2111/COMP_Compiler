@@ -138,6 +138,7 @@ CMD* ast_cmd_assign(char* vname, Expr* expr);
 CMD* ast_cmd_if(CMD* cmd_else,CMDList* inside,BoolExpr* b);
 CMD* ast_cmd_else(CMDList* inside);
 CMD* ast_cmd_while(CMDList* inside,BoolExpr* b);
+CMD* ast_cmd_for(CMD* start, BoolExpr* b, CMD* incr, CMDList* inside);
 CMD* ast_cmd_scan(char* str,VarList* v);
 CMD* ast_cmd_print(char* str,VarList* v);
 

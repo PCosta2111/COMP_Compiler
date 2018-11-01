@@ -87,7 +87,7 @@ void printOp(int x){
         printf("/:\n"); 
         break;
       case MOD: 
-        printf("%:\n"); 
+        printf("MOD:\n"); 
         break;
       case EQUAL: 
         printf("==:\n");
