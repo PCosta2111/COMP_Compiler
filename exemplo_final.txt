@@ -1,0 +1,25 @@
+int main() { 
+
+	int a = 0; 
+	
+	float b = 2; 
+	
+	if ( a < 5 ) {
+		int c = 3;
+		
+	}
+	
+	else {
+	
+		c = c + 1; 
+	}
+	
+	while ( a < 5 ) {
+		c = c + 1;
+	}
+	
+	printf("%d\n",c);
+	
+	scanf("%d",&c);
+	
+}

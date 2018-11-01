@@ -1390,43 +1390,43 @@ yyreduce:
 
   case 13:
 #line 121 "parser.bison" /* yacc.c:1646  */
-    {(yyval.cmd) = ast_cmd_if("IF",NULL,(yyvsp[-1].cmdList),(yyvsp[-4].exprBool));}
+    {(yyval.cmd) = ast_cmd_if(NULL,(yyvsp[-1].cmdList),(yyvsp[-4].exprBool));}
 #line 1395 "parser.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 123 "parser.bison" /* yacc.c:1646  */
-    {(yyval.cmd) = ast_cmd_if("IF",(yyvsp[0].cmd),(yyvsp[-2].cmdList),(yyvsp[-5].exprBool));}
+    {(yyval.cmd) = ast_cmd_if((yyvsp[0].cmd),(yyvsp[-2].cmdList),(yyvsp[-5].exprBool));}
 #line 1401 "parser.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 126 "parser.bison" /* yacc.c:1646  */
-    {(yyval.cmd) = ast_cmd_else("ELSE",(yyvsp[-1].cmdList));}
+    {(yyval.cmd) = ast_cmd_else((yyvsp[-1].cmdList));}
 #line 1407 "parser.c" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 129 "parser.bison" /* yacc.c:1646  */
-    {(yyval.cmd) = ast_cmd_for("FOR",(yyvsp[-8].cmd),(yyvsp[-6].exprBool),(yyvsp[-4].cmd),(yyvsp[-1].cmdList));}
+    {(yyval.cmd) = ast_cmd_for((yyvsp[-8].cmd),(yyvsp[-6].exprBool),(yyvsp[-4].cmd),(yyvsp[-1].cmdList));}
 #line 1413 "parser.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 132 "parser.bison" /* yacc.c:1646  */
-    {(yyval.cmd) = ast_cmd_while("WHILE",(yyvsp[-1].cmdList),(yyvsp[-4].exprBool));}
+    {(yyval.cmd) = ast_cmd_while((yyvsp[-1].cmdList),(yyvsp[-4].exprBool));}
 #line 1419 "parser.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 135 "parser.bison" /* yacc.c:1646  */
-    {(yyval.cmd) = ast_cmd_PRINT_SCAN("PRINTF",(yyvsp[-3].varName),(yyvsp[-2].vList));}
+    {(yyval.cmd) = ast_cmd_print((yyvsp[-3].varName),(yyvsp[-2].vList));}
 #line 1425 "parser.c" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 138 "parser.bison" /* yacc.c:1646  */
-    {(yyval.cmd) = ast_cmd_PRINT_SCAN("SCANF",(yyvsp[-3].varName),(yyvsp[-2].vList));}
+    {(yyval.cmd) = ast_cmd_scan((yyvsp[-3].varName),(yyvsp[-2].vList));}
 #line 1431 "parser.c" /* yacc.c:1646  */
     break;
 

@@ -50,11 +50,12 @@ struct _CMD{
 			CMD_ELSE,
 			CMD_WHILE,
 			CMD_FOR,
-			CMD_PRINT_SCAN
+			CMD_SCAN,
+			CMD_PRINT
 	}id;
-	char *leftTXT;
 	union{
 		struct{
+			char* var_type;
 			char* declared_var;
 			struct _Expr* expr;
 		}sdecl;
@@ -96,7 +97,15 @@ struct _CMD{
 			char* str;
 			struct _VarList* vList;
 			
-		}spscan;
+		}sscan;
+		
+		struct{
+			
+			char* str;
+			struct _VarList* vList;
+			
+		}sprint;
+		
 	}att;
 };
 
@@ -126,10 +135,11 @@ BoolExpr* ast_bool(int v);
 //----
 CMD* ast_cmd_decl(char* str1,char* vname,Expr* expr);
 CMD* ast_cmd_assign(char* vname, Expr* expr);
-CMD* ast_cmd_if(char* str1,CMD* cmd_else,CMDList* inside,BoolExpr* b);
-CMD* ast_cmd_else(char* str1, CMDList* inside);
-CMD* ast_cmd_while(char* str1,CMDList* inside,BoolExpr* b);
-CMD* ast_cmd_PRINT_SCAN(char* str1,char* str,VarList* v);
+CMD* ast_cmd_if(CMD* cmd_else,CMDList* inside,BoolExpr* b);
+CMD* ast_cmd_else(CMDList* inside);
+CMD* ast_cmd_while(CMDList* inside,BoolExpr* b);
+CMD* ast_cmd_scan(char* str,VarList* v);
+CMD* ast_cmd_print(char* str,VarList* v);
 
 //----
 //CMD* ast_cmd_IF_WHILE(char* str1,CMD* cmd_else,CMDList* inside,BoolExpr* b);

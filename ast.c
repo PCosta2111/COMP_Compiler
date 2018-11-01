@@ -107,8 +107,8 @@ CMD* ast_cmd(char* str1,CMD* cmd_else,CMDList* inside){  // ISTO VIA DEIXAR DE S
 
 CMD* ast_cmd_decl(char* str1,char* vname,Expr* expr){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
-	res->leftTXT = str1;
 	res->id = CMD_DECL;
+	res->att.sdecl.var_type = str1;
 	res->att.sdecl.declared_var = vname;
 	res->att.sdecl.expr =  expr;
 	return res;
@@ -123,10 +123,9 @@ CMD* ast_cmd_assign(char* vname, Expr* expr){
 	return res;
 }
 
-CMD* ast_cmd_if(char* str1,CMD* cmd_else,CMDList* inside,BoolExpr* b){
+CMD* ast_cmd_if(CMD* cmd_else,CMDList* inside,BoolExpr* b){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
 	res->id = CMD_IF;
-	res->leftTXT = str1;
 	res->att.sif.cond= b;
 	
 	res->att.sif.cmd_else = cmd_else;
@@ -135,19 +134,17 @@ CMD* ast_cmd_if(char* str1,CMD* cmd_else,CMDList* inside,BoolExpr* b){
 
 }
 
-CMD* ast_cmd_else(char* str1, CMDList* inside){
+CMD* ast_cmd_else(CMDList* inside){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
 	res->id = CMD_ELSE;
-	res->leftTXT= str1;
 	
 	res->att.selse.insideBlock=inside;
 	return res;
 }
 
 
-CMD* ast_cmd_while(char* str1,CMDList* inside,BoolExpr* b){
+CMD* ast_cmd_while(CMDList* inside,BoolExpr* b){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
-	res->leftTXT = str1;
 	res->id = CMD_WHILE;
 	res->att.swhile.cond = b;
 	
@@ -155,9 +152,8 @@ CMD* ast_cmd_while(char* str1,CMDList* inside,BoolExpr* b){
 	return res;
 }
 
-CMD* ast_cmd_for(char* str1, CMD* start, BoolExpr* b, CMD* incr, CMDList* inside){
+CMD* ast_cmd_for(CMD* start, BoolExpr* b, CMD* incr, CMDList* inside){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
-	res->leftTXT = str1;
 	res->id = CMD_FOR;
 	
 	res->att.sfor.cmd_init = start;
@@ -167,17 +163,18 @@ CMD* ast_cmd_for(char* str1, CMD* start, BoolExpr* b, CMD* incr, CMDList* inside
 	return res;
 }
 
-CMD* ast_cmd_PRINT_SCAN(char* str1,char* str,VarList* v){
+CMD* ast_cmd_scan(char* str,VarList* v){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
-	res->leftTXT = str1;
-	res->id = CMD_PRINT_SCAN;
-	res->att.spscan.str= str;
-	res->att.spscan.vList = v;
+	res->id = CMD_SCAN;
+	res->att.sscan.str = str;
+	res->att.sscan.vList = v;
 	return res;
 }
 
-
-
-
-
-
+CMD* ast_cmd_print(char* str,VarList* v){
+	CMD* res = (CMD*) malloc(sizeof(CMD));
+	res->id = CMD_PRINT;
+	res->att.sprint.str= str;
+	res->att.sprint.vList = v;
+	return res;
+}

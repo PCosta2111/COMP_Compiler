@@ -118,24 +118,24 @@ atrib:
 	VAR_NAME ASSIGN expr {$$ = ast_cmd_assign($1,$3);}
 
 if:
-	IF OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_if("IF",NULL,$6,$3);}
+	IF OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_if(NULL,$6,$3);}
 	|
-	IF OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET else {$$ = ast_cmd_if("IF",$8,$6,$3);};
+	IF OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET else {$$ = ast_cmd_if($8,$6,$3);};
 
 else:
-	ELSE OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_else("ELSE",$3);};
+	ELSE OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_else($3);};
 
 for:
-	FOR OPEN_PAR atrib SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_for("FOR",$3,$5,$7,$10);};
+	FOR OPEN_PAR atrib SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_for($3,$5,$7,$10);};
 
 while:
-	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_while("WHILE",$6,$3);};
+	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_while($6,$3);};
 	
 printf:
-	PRINT OPEN_PAR STRING var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd_PRINT_SCAN("PRINTF",$3,$4);}; 
+	PRINT OPEN_PAR STRING var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd_print($3,$4);}; 
 
 scanf:
-	SCAN OPEN_PAR STRING s_var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd_PRINT_SCAN("SCANF",$3,$4);};
+	SCAN OPEN_PAR STRING s_var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd_scan($3,$4);};
 		
 var_list:
 	{ $$ = NULL;}

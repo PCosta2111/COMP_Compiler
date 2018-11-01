@@ -182,45 +182,6 @@ void putTabs(int tabs){
 }
 	
 
-/*
-
-void printCMD(CMD* c,int tabs){
-	int i;
-	for(i = 0 ; i < tabs ; i++)
-		printf("   ");
-	
-	switch(c->id){
-		case CMD_DECL:
-			print("%s", c->leftTXT);
-			break;
-		case CMD_ASSIGN:
-			print("%s", c->leftTXT);
-			break;
-		case CMD_IF:
-			printf("%s:\n",c->leftTXT);
-			printBoolExpr(c->att.sif.cond,tabs+1);
-			break;
-		case CMD_ELSE:
-			print("%s", c->leftTXT);
-			break;
-		case CMD_WHILE:
-			print("%s", c->leftTXT);
-			break;
-		case CMD_FOR:
-		
-			break;
-		case CMD_PRINT_SCAN:
-			print("%s", c->leftTXT);
-			break;
-		default:
-			printf("%s:\n",c->leftTXT);
-		break;
-	}
-	
-}
-
-*/
-
 void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 	
 	if(code != NULL){
@@ -230,17 +191,17 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 		putTabs(tabs);
 		switch(c->id){
 			case CMD_DECL:
-				printf("%s %s =:\n", c->leftTXT, c->att.sdecl.declared_var);
+				printf("%s %s =:\n", c->att.sdecl.var_type, c->att.sdecl.declared_var);
 				recPrint(c->att.sdecl.expr,tabs+1);
 				printf("\n");
 				break;
 			case CMD_ASSIGN:
-				printf("%s =:\n", c->att.sdecl.declared_var);
-				recPrint(c->att.sdecl.expr,tabs+1);
+				printf("%s =:\n", c->att.sassign.assigned_var);
+				recPrint(c->att.sassign.expr,tabs+1);
 				printf("\n");
 				break;
 			case CMD_IF:
-				printf("%s:\n",c->leftTXT);
+				printf("If :\n");
 				printBoolExpr(c->att.sif.cond,tabs+1);
 				recPrintCode(c->att.sif.insideBlock,tabs+1);
 				if( c->att.sif.cmd_else != NULL){
@@ -252,13 +213,14 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				printf("\n");
 				break;
 			case CMD_WHILE:
-				printf("%s:\n", c->leftTXT);
+				printf("While :\n");
 				printBoolExpr(c->att.swhile.cond,tabs+1);
 				recPrintCode(c->att.swhile.insideBlock,tabs+1);
 				printf("\n");
 				break;
+				
 			case CMD_FOR:
-				printf("%s:\n",c->leftTXT);
+				printf("For :\n");
 				putTabs(tabs+1);
 				printf("INIT_EXPR:\n");
 				putTabs(tabs+2);
@@ -273,21 +235,34 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				printf("%s =:\n",c->att.sfor.cmd_incr->att.sdecl.declared_var);
 				recPrint(c->att.sfor.cmd_incr->att.sdecl.expr,tabs+3);
 				printf("\n");
-				
 				break;
-			case CMD_PRINT_SCAN:
-				printf("%s:\n", c->leftTXT);
+				
+			case CMD_PRINT:
+				printf("Print :\n");
 				putTabs(tabs+1);
 				printf("STRING : \n");
 				putTabs(tabs+2);
-				printf("%s\n",c->att.spscan.str);
+				printf("%s\n",c->att.sprint.str);
 				putTabs(tabs+1);
 				printf("VARS : \n");
-				printVarList(c->att.spscan.vList,tabs+2);
+				printVarList(c->att.sprint.vList,tabs+2);
 				printf("\n");
 				break;
+				
+			case CMD_SCAN:
+				printf("Scan :\n");
+				putTabs(tabs+1);
+				printf("STRING : \n");
+				putTabs(tabs+2);
+				printf("%s\n",c->att.sscan.str);
+				putTabs(tabs+1);
+				printf("VARS : \n");
+				printVarList(c->att.sscan.vList,tabs+2);
+				printf("\n");
+				break;
+
 			default:
-				printf("%s:\n",c->leftTXT);
+				printf("Unrecognized cmd\n");
 			break;
 		}
 	}
