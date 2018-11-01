@@ -123,13 +123,13 @@ if:
 	IF OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET else {$$ = ast_cmd_if("IF",$8,$6,$3);};
 
 else:
-	ELSE OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd("ELSE",NULL,$3);};
+	ELSE OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_else("ELSE",$3);};
 
 for:
-	FOR OPEN_PAR atrib SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd("FOR",NULL,$10);};
+	FOR OPEN_PAR atrib SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_for("FOR",$3,$5,$7,$10);};
 
 while:
-	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_IF_WHILE("WHILE",NULL,$6,$3);};
+	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_while("WHILE",$6,$3);};
 	
 printf:
 	PRINT OPEN_PAR STRING var_list CLOSE_PAR SEMI_COLON {$$ = ast_cmd_PRINT_SCAN("PRINTF",$3,$4);}; 

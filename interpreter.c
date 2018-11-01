@@ -122,15 +122,22 @@ void recPrint(Expr* exp,int tabs){
 			printf("   ");
 			
 		if (exp->kind == E_INTEGER) {
-			printf("%d\n",exp->attr.value);
+			printf("%d",exp->attr.value);
 		}else if(exp->kind == E_VAR){
-			printf("%s\n",exp->attr.varname);
+			printf("%s",exp->attr.varname);
 		}else{
 			printOp(exp->attr.op.operator);
 			tabs++;
 			recPrint(exp->attr.op.left,tabs);
 			recPrint(exp->attr.op.right,tabs);
 		}
+	}
+}
+
+void printVarList(VarList* v){
+	if(v->head != NULL){
+		printf(" %c", v->head);
+		printVarList(v->next);
 	}
 }
 
@@ -167,15 +174,35 @@ void printAbsTree(Expr* exp){
 	recPrint(exp,0);
 }
 
+/*
+
 void printCMD(CMD* c,int tabs){
 	int i;
 	for(i = 0 ; i < tabs ; i++)
 		printf("   ");
 	
-	switch(c->cmdAttr.id){
-		case CMD_IF_WHILE:
+	switch(c->id){
+		case CMD_DECL:
+			print("%s", c->leftTXT);
+			break;
+		case CMD_ASSIGN:
+			print("%s", c->leftTXT);
+			break;
+		case CMD_IF:
 			printf("%s:\n",c->leftTXT);
-			printBoolExpr(c->cmdAttr.cond,tabs+1);
+			printBoolExpr(c->att.sif.cond,tabs+1);
+			break;
+		case CMD_ELSE:
+			print("%s", c->leftTXT);
+			break;
+		case CMD_WHILE:
+			print("%s", c->leftTXT);
+			break;
+		case CMD_FOR:
+		
+			break;
+		case CMD_PRINT_SCAN:
+			print("%s", c->leftTXT);
 			break;
 		default:
 			printf("%s:\n",c->leftTXT);
@@ -184,14 +211,73 @@ void printCMD(CMD* c,int tabs){
 	
 }
 
-void recPrintCode(CMDList* code,int tabs){
+*/
+
+void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
+	
 	if(code != NULL){
-		printCMD(code->cmd,tabs);
-		recPrintCode(code->cmd->insideBlock,tabs+1);
-		if( code->cmd->cmd_else != NULL){
-			printCMD(code->cmd->cmd_else,tabs);
-			recPrintCode(code->cmd->cmd_else->insideBlock,tabs+1);
+		
+		CMD* c = (CMD*) malloc(sizeof(CMD));
+		c = code->cmd;
+		
+		switch(c->id){
+			case CMD_DECL:
+				printf("%s\n", c->leftTXT);
+				printf("	");
+				printf("%s = ", c->att.sdecl.declared_var);
+				recPrint(c->att.sdecl.expr,tabs+1);
+				printf("\n");
+				break;
+			case CMD_ASSIGN:
+				printf("	");
+				printf("%s = ", c->att.sdecl.declared_var);
+				recPrint(c->att.sdecl.expr,tabs+1);
+				printf("\n");
+				break;
+			case CMD_IF:
+				printf("%s:\n",c->leftTXT);
+				printBoolExpr(c->att.sif.cond,tabs+1);
+				recPrintCode(c->att.sif.insideBlock,tabs+2);
+				printf("\n");
+				break;
+			case CMD_ELSE:
+				printf("%s", c->leftTXT);
+				recPrintCode(c->att.selse.insideBlock,tabs+2);
+				printf("\n");
+				break;
+			case CMD_WHILE:
+				printf("%s", c->leftTXT);
+				printBoolExpr(c->att.swhile.cond,tabs+1);
+				recPrintCode(c->att.swhile.insideBlock,tabs+2);
+				printf("\n");
+				break;
+			case CMD_FOR:
+				printf("%s:\n",c->leftTXT);
+				recPrint(c->att.sfor.cmd_init,tabs+1);
+				printf(" ; ");
+				printBoolExpr(c->att.sfor.cond,tabs+1);
+				printf(" ; ");
+				recPrint(c->att.sfor.cmd_incr,tabs+1);
+				printf(" ; \n");
+				recPrintCode(c->att.sfor.insideBlock,tabs+2);
+				printf("\n");
+				break;
+			case CMD_PRINT_SCAN:
+				printf("%s", c->leftTXT);
+				printf("String : \n");
+				printf("	");
+				printf("%c\n",c->att.spscan.str);
+				printf("Var_List : \n");
+				printf("	");
+				printVarList(c->att.spscan.vList);
+				printf("\n");
+				break;
+			default:
+				printf("%s:\n",c->leftTXT);
+			break;
 		}
+	}
+	if(code->next != NULL){
 		recPrintCode(code->next,tabs);
 	}
 }
