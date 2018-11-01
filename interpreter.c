@@ -227,14 +227,8 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				putTabs(tabs+1);
 				printf("INIT_EXPR:\n");
 				putTabs(tabs+2);
-				if(c->att.sfor.cmd_init->id == CMD_DECL){
-					printf("%s %s =:\n",c->att.sfor.cmd_init->att.sdecl.var_type,c->att.sfor.cmd_init->att.sdecl.declared_var);
-					recPrint(c->att.sfor.cmd_init->att.sdecl.expr,tabs+3); // ->att.sdecl.expr
-				}
-				else {
-					printf("%s =:\n",c->att.sfor.cmd_init->att.sassign.assigned_var);
-					recPrint(c->att.sfor.cmd_init->att.sassign.expr,tabs+3);
-				}	
+				printf("%s =:\n",c->att.sfor.cmd_init->att.sassign.assigned_var);
+				recPrint(c->att.sfor.cmd_init->att.sassign.expr,tabs+3);	
 				printBoolExpr(c->att.sfor.cond,tabs+1);
 				
 				putTabs(tabs+1);
