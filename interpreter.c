@@ -203,7 +203,9 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 			case CMD_IF:
 				printf("IF :\n");
 				printBoolExpr(c->att.sif.cond,tabs+1);
-				recPrintCode(c->att.sif.insideBlock,tabs+1);
+				putTabs(tabs+1);
+				printf("CODE:\n");
+				recPrintCode(c->att.sif.insideBlock,tabs+2);
 				if( c->att.sif.cmd_else != NULL){
 					putTabs(tabs);
 					printf("ELSE:\n");
@@ -215,7 +217,9 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 			case CMD_WHILE:
 				printf("WHILE :\n");
 				printBoolExpr(c->att.swhile.cond,tabs+1);
-				recPrintCode(c->att.swhile.insideBlock,tabs+1);
+				putTabs(tabs+1);
+				printf("CODE:\n");
+				recPrintCode(c->att.swhile.insideBlock,tabs+2);
 				printf("\n");
 				break;
 			case CMD_FOR:
@@ -238,6 +242,9 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				putTabs(tabs+2);
 				printf("%s =:\n",c->att.sfor.cmd_incr->att.sassign.assigned_var); 
 				recPrint(c->att.sfor.cmd_incr->att.sassign.expr,tabs+3); // ->att.sassign.expr
+				putTabs(tabs+1);
+				printf("CODE:\n");
+				recPrintCode(c->att.sfor.insideBlock,tabs+3);
 				printf("\n");
 				break;
 				
