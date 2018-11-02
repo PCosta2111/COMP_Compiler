@@ -40,7 +40,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 80 "parser.bison" /* yacc.c:1909  */
+#line 82 "parser.bison" /* yacc.c:1909  */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -92,7 +92,7 @@ BoolExpr* broot;
     CLOSE_PAR = 286,
     STRING = 287,
     PRINT = 288,
-    COLON = 289,
+    COMMA = 289,
     SCAN = 290,
     COM_E = 291
   };
@@ -113,8 +113,9 @@ union YYSTYPE
   CMDList* cmdList; 
   BoolExpr* exprBool;
   VarList* vList;  
+  DeclList* dList;
 
-#line 118 "parser.h" /* yacc.c:1909  */
+#line 119 "parser.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

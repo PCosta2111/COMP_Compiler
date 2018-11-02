@@ -41,6 +41,13 @@ struct _VarList{
 	struct _VarList* next;
 };
 
+struct _DeclList{
+	char* var;
+	struct _Expr* val;
+	struct _DeclList* next;
+};
+
+typedef struct _DeclList DeclList;
 
 struct _CMD{
 	enum{
@@ -56,8 +63,9 @@ struct _CMD{
 	union{
 		struct{
 			char* var_type;
-			char* declared_var;
-			struct _Expr* expr;
+			/*char* declared_var;
+			struct _Expr* expr;*/
+			DeclList* declList;
 		}sdecl;
 		
 		struct{
@@ -133,7 +141,8 @@ CMDList* ast_cmdlist(CMD* c, CMDList* next);
 BoolExpr* ast_Bool_operation(int operator, Expr* left, Expr* right);
 BoolExpr* ast_bool(int v);
 //----
-CMD* ast_cmd_decl(char* str1,char* vname,Expr* expr);
+CMD* ast_cmd_decl(char* str1,DeclList* d);
+DeclList* ast_cmd_declList(char* vName,Expr* exp,DeclList* next);
 CMD* ast_cmd_assign(char* vname, Expr* expr);
 CMD* ast_cmd_if(CMD* cmd_else,CMDList* inside,BoolExpr* b);
 CMD* ast_cmd_else(CMDList* inside);

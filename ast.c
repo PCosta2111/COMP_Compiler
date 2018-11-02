@@ -105,12 +105,24 @@ CMD* ast_cmd(char* str1,CMD* cmd_else,CMDList* inside){  // ISTO VIA DEIXAR DE S
  * ast_cmd_print_scan -DONE-
  * */
 
-CMD* ast_cmd_decl(char* str1,char* vname,Expr* expr){
+CMD* ast_cmd_decl(char* str1,DeclList* d){
 	CMD* res = (CMD*) malloc(sizeof(CMD));
 	res->id = CMD_DECL;
+	res->att.sdecl.declList = d;
 	res->att.sdecl.var_type = str1;
-	res->att.sdecl.declared_var = vname;
-	res->att.sdecl.expr =  expr;
+	//res->att.sdecl.declared_var = vname;
+	//res->att.sdecl.expr =  expr;
+	return res;
+
+}
+DeclList* ast_cmd_declList(char* vName,Expr* exp,DeclList* next){
+	DeclList* res = (DeclList*) malloc(sizeof(DeclList));
+	res->var = vName;
+	res->val = exp;
+	res->next = next;
+	
+	//res->att.sdecl.declared_var = vname;
+	//res->att.sdecl.expr =  expr;
 	return res;
 
 }

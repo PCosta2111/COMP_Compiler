@@ -31,7 +31,7 @@
   CLOSE_PAR
   STRING
   PRINT
-  COLON
+  COMMA
   SCAN
   COM_E
   
@@ -53,6 +53,7 @@
   CMDList* cmdList; 
   BoolExpr* exprBool;
   VarList* vList;  
+  DeclList* dList;
 }
 
 %type <intValue> INT
@@ -64,6 +65,7 @@
 %type <exprBool> bexpr
 %type <cmdList> program
 %type <cmdList> code
+%type <dList> vars
 %type <cmd> atrib
 %type <cmd> assign
 %type <cmd> if
@@ -101,6 +103,8 @@ code:
 	|
 	atrib SEMI_COLON code {$$ = ast_cmdlist($1,$3);}
 	|
+	assign SEMI_COLON code {$$ = ast_cmdlist($1,$3);}
+	|
 	if code {$$ = ast_cmdlist($1,$2);}
 	|
 	for code {$$ = ast_cmdlist($1,$2);}
@@ -112,11 +116,14 @@ code:
 	scanf code {$$ = ast_cmdlist($1,$2);};
 	
 atrib:
-	TYPE_INT VAR_NAME ASSIGN expr {$$ = ast_cmd_decl("INT",$2,$4);}
+	TYPE_INT vars {$$ = ast_cmd_decl("INT",$2);}
 	|
-	TYPE_FLOAT VAR_NAME ASSIGN expr {$$ = ast_cmd_decl("FLOAT",$2,$4);}
+	TYPE_FLOAT vars {$$ = ast_cmd_decl("FLOAT",$2);};
+
+vars:
+	VAR_NAME ASSIGN expr {$$ = ast_cmd_declList($1,$3,NULL);}
 	|
-	assign {$$ = $1;};
+	VAR_NAME ASSIGN expr COMMA vars {$$ = ast_cmd_declList($1,$3,$5);};
 
 assign:
 	VAR_NAME ASSIGN expr {$$ = ast_cmd_assign($1,$3);}; 
@@ -130,7 +137,7 @@ else:
 	ELSE OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_else($3);};
 
 for:
-	FOR OPEN_PAR assign SEMI_COLON bexpr SEMI_COLON atrib CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_for($3,$5,$7,$10);};
+	FOR OPEN_PAR assign SEMI_COLON bexpr SEMI_COLON assign CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_for($3,$5,$7,$10);};
 
 while:
 	WHILE OPEN_PAR bexpr CLOSE_PAR OPEN_BRACKET code CLOSE_BRACKET {$$ = ast_cmd_while($6,$3);};
@@ -144,12 +151,12 @@ scanf:
 var_list:
 	{ $$ = NULL;}
 	|
-	COLON VAR_NAME var_list { $$ = ast_var_list($2,$3);}
+	COMMA VAR_NAME var_list { $$ = ast_var_list($2,$3);}
 
 s_var_list:
 	{ $$ = NULL;}
 	|
-	COLON COM_E VAR_NAME s_var_list { $$ = ast_var_list($3,$4);}
+	COMMA COM_E VAR_NAME s_var_list { $$ = ast_var_list($3,$4);}
 	
 expr: 
   INT { 

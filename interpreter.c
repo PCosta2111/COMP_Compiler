@@ -191,12 +191,17 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 		putTabs(tabs);
 		switch(c->id){
 			case CMD_DECL:
-				printf("%s %s =:\n", c->att.sdecl.var_type, c->att.sdecl.declared_var);
-				recPrint(c->att.sdecl.expr,tabs+1);
-				printf("\n");
+				while(c->att.sdecl.declList != NULL){
+					printf("%s %s = :\n", c->att.sdecl.var_type, c->att.sdecl.declList->var);
+					recPrint(c->att.sdecl.declList->val,tabs+1);
+					printf("\n");
+					c->att.sdecl.declList = c->att.sdecl.declList->next;
+					if(c->att.sdecl.declList != NULL)
+						putTabs(tabs);
+				}
 				break;
 			case CMD_ASSIGN:
-				printf("%s =:\n", c->att.sassign.assigned_var);
+				printf("%s = :\n", c->att.sassign.assigned_var);
 				recPrint(c->att.sassign.expr,tabs+1);
 				printf("\n");
 				break;
@@ -204,11 +209,11 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				printf("IF :\n");
 				printBoolExpr(c->att.sif.cond,tabs+1);
 				putTabs(tabs+1);
-				printf("CODE:\n");
+				printf("CODE :\n");
 				recPrintCode(c->att.sif.insideBlock,tabs+2);
 				if( c->att.sif.cmd_else != NULL){
 					putTabs(tabs);
-					printf("ELSE:\n");
+					printf("ELSE :\n");
 					recPrintCode(c->att.sif.cmd_else->att.selse.insideBlock,tabs+1);
 				}
 				//recPrintCode(c->att.sif.cmd_else,tabs);
@@ -218,26 +223,26 @@ void recPrintCode(CMDList* code,int tabs){ // REFAZER COM SWITCH
 				printf("WHILE :\n");
 				printBoolExpr(c->att.swhile.cond,tabs+1);
 				putTabs(tabs+1);
-				printf("CODE:\n");
+				printf("CODE :\n");
 				recPrintCode(c->att.swhile.insideBlock,tabs+2);
 				printf("\n");
 				break;
 			case CMD_FOR:
 				printf("FOR :\n");
 				putTabs(tabs+1);
-				printf("INIT_EXPR:\n");
+				printf("INIT_EXPR :\n");
 				putTabs(tabs+2);
-				printf("%s =:\n",c->att.sfor.cmd_init->att.sassign.assigned_var);
+				printf("%s = :\n",c->att.sfor.cmd_init->att.sassign.assigned_var);
 				recPrint(c->att.sfor.cmd_init->att.sassign.expr,tabs+3);	
 				printBoolExpr(c->att.sfor.cond,tabs+1);
 				
 				putTabs(tabs+1);
-				printf("INCR_EXPR:\n");
+				printf("INCR_EXPR :\n");
 				putTabs(tabs+2);
-				printf("%s =:\n",c->att.sfor.cmd_incr->att.sassign.assigned_var); 
+				printf("%s = :\n",c->att.sfor.cmd_incr->att.sassign.assigned_var); 
 				recPrint(c->att.sfor.cmd_incr->att.sassign.expr,tabs+3); // ->att.sassign.expr
 				putTabs(tabs+1);
-				printf("CODE:\n");
+				printf("CODE :\n");
 				recPrintCode(c->att.sfor.insideBlock,tabs+3);
 				printf("\n");
 				break;
